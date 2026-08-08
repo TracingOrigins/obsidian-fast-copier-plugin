@@ -1,7 +1,7 @@
 {
 	"id": "fast-copier",
 	"name": "Fast Copier",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.13.4",
 	"description": "Quickly copy inline code, formatted text, links, and tags.",
 	"author": "Kevin",
