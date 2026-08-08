@@ -5,9 +5,8 @@
         <img src="https://img.shields.io/github/downloads/TracingOrigins/obsidian-fast-copier-plugin/total?logo=github" alt="GitHub Downloads">
     </p>
     <p>[<a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.zh.md">中文</a> | <a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.md">English</a> | Русский]</p>
+    <p><a href="https://community.obsidian.md/plugins/fast-copier" target="_blank">Fast Copier</a> — это плагин Obsidian, который добавляет кнопку копирования рядом с форматированным текстом — встроенным кодом, жирным, курсивом, выделением, заголовками, тегами, ссылками и т. д. — в режимах редактирования и чтения. Нажмите на кнопку, чтобы мгновенно скопировать содержимое, без внешних зависимостей.</p>
 </div>
-
-Fast Copier — это плагин Obsidian, который добавляет **кнопку копирования** рядом с форматированным текстом — встроенным кодом, жирным, курсивом, выделением, заголовками, тегами, ссылками и т. д. — в режимах **редактирования** и **чтения**. Нажмите на кнопку, чтобы мгновенно скопировать содержимое, без внешних зависимостей.
 
 ## Возможности
 

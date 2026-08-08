@@ -5,9 +5,8 @@
         <img src="https://img.shields.io/github/downloads/TracingOrigins/obsidian-fast-copier-plugin/total?logo=github" alt="GitHub Downloads">
     </p>
     <p>[中文 | <a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.md">English</a> | <a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.ru.md">Русский</a>]</p>
+    <p><a href="https://community.obsidian.md/plugins/fast-copier" target="_blank">Fast Copier</a> 是一个为格式化文本（行内代码、加粗、斜体、高亮、标题、标签、链接等）在编辑模式和阅读模式右侧添加复制按钮的 Obsidian 插件。点击按钮即可一键复制内容，无需外部依赖。</p>
 </div>
-
-Fast Copier 是一个为格式化文本（行内代码、加粗、斜体、高亮、标题、标签、链接等）在**编辑模式**和**阅读模式**右侧添加**复制按钮**的 Obsidian 插件。点击按钮即可一键复制内容，无需外部依赖。
 
 ## 功能特性
 
@@ -40,10 +39,6 @@ Fast Copier 是一个为格式化文本（行内代码、加粗、斜体、高�
 > **提示：** 复制按钮的显示与隐藏由命令 **切换显示/隐藏复制按钮** 控制，不在此设置中。
 
 > **系统要求：** Obsidian 1.13.0 或更高版本。
-
-## 支持的语言
-
-Python、PowerShell、Bash、TypeScript、TSX、JavaScript、JSX、C#、C、C++、SQL、YAML、TOML、Rust、Go、Lua、GDScript、Batch、Ruby、PHP、Perl、R、Dart、Kotlin、Swift、Vue、Svelte、INI、XML、HTML、CSS、SCSS、Less、JSON、JSON5、HCL、Protobuf、GraphQL 等。
 
 ## 安装
 

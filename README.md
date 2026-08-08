@@ -5,9 +5,8 @@
         <img src="https://img.shields.io/github/downloads/TracingOrigins/obsidian-fast-copier-plugin/total?logo=github" alt="GitHub Downloads">
     </p>
     <p>[<a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.zh.md">中文</a> | English | <a href="https://github.com/TracingOrigins/obsidian-fast-copier-plugin/blob/master/README.ru.md">Русский</a>]</p>
+    <p><a href="https://community.obsidian.md/plugins/fast-copier" target="_blank">Fast Copier</a> is an Obsidian plugin that adds a copy button next to formatted text — inline code, bold, italic, highlights, headings, tags, links, and more — in both Editing and Reading modes. Click the button to copy the content instantly, no external dependencies.</p>
 </div>
-
-Fast Copier is an Obsidian plugin that adds a **copy button** next to formatted text — inline code, bold, italic, highlights, headings, tags, links, and more — in both **Editing** and **Reading** modes. Click the button to copy the content instantly, no external dependencies.
 
 ## Features
 
@@ -40,10 +39,6 @@ Customize which content types show a button via **Settings → Fast Copier**.
 > **Tip:** Showing or hiding the copy buttons is controlled by the **Toggle show/hide copy button** command, not by a setting.
 
 > **Requirements:** Obsidian 1.13.0 or later.
-
-## Supported Languages
-
-Python, PowerShell, Bash, TypeScript, TSX, JavaScript, JSX, C#, C, C++, SQL, YAML, TOML, Rust, Go, Lua, GDScript, Batch, Ruby, PHP, Perl, R, Dart, Kotlin, Swift, Vue, Svelte, INI, XML, HTML, CSS, SCSS, Less, JSON, JSON5, HCL, Protobuf, GraphQL, and more.
 
 ## Installation
 
