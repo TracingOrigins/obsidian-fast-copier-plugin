@@ -40,6 +40,7 @@ type SettingTabPlugin = Plugin & {
 
 export class FastCopierSettingTab extends PluginSettingTab {
   plugin: SettingTabPlugin;
+  icon: string = "clipboard-check";
 
   constructor(app: App, plugin: SettingTabPlugin) {
     super(app, plugin);
