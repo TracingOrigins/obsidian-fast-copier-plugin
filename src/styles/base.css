@@ -1,0 +1,56 @@
+/* ============================================================
+   Fast Copier — styles
+   ============================================================ */
+
+/* ---- 阅读模式：单击复制的元素 ---- */
+.fast-copier-clickable {
+  cursor: copy;
+  transition: background-color 0.15s ease;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.fast-copier-clickable:hover {
+  background-color: var(--text-highlight-bg, rgba(255, 255, 0, 0.2));
+}
+
+/* ---- 阅读模式：可跳转元素的包裹容器 + 复制按钮 ---- */
+.fast-copier-wrapper {
+  position: relative;
+  display: inline;
+}
+
+.fast-copier-btn {
+  display: inline;
+  cursor: pointer;
+  margin-left: 2px;
+  opacity: 0.4;
+  vertical-align: middle;
+  user-select: none;
+  padding: 1px 2px;
+  border-radius: 3px;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.fast-copier-btn:hover {
+  opacity: 1;
+  background-color: var(--background-modifier-hover, rgba(128, 128, 128, 0.2));
+}
+
+/* ---- 源码模式：始终显示的复制按钮 ---- */
+.fast-copier-source-btn {
+  display: inline;
+  cursor: pointer;
+  margin-left: 2px;
+  opacity: 0.35;
+  user-select: none;
+  padding: 1px 2px;
+  border-radius: 3px;
+  vertical-align: middle;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.fast-copier-source-btn:hover {
+  opacity: 1;
+  background-color: var(--background-modifier-hover, rgba(128, 128, 128, 0.15));
+}

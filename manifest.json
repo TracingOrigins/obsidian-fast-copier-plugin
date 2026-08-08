@@ -1,0 +1,11 @@
+{
+	"id": "fast-copier",
+	"name": "Fast Copier",
+	"version": "1.0.0",
+	"minAppVersion": "1.13.4",
+	"description": "Quickly copy inline code, formatted text, links, and tags.",
+	"author": "Kevin",
+	"authorUrl": "https://github.com/TracingOrigins",
+	"fundingUrl": "https://support.tracingorigins.top",
+	"isDesktopOnly": false
+}
