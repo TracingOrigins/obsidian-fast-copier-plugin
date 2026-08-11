@@ -15,6 +15,7 @@ import {
   areCopyButtonsVisible,
   boldItalicMatchers,
   codeMatchers,
+  linkMatchers,
   type ContentTypeId,
 } from "../core/content-types";
 import type { FastCopierSettings } from "../settings/settings";
@@ -123,10 +124,11 @@ function collectCandidates(text: string, matchers: ReturnType<typeof getEnabledS
   return candidates;
 }
 
-// 计算行内代码区间与加粗斜体专属区间。
+// 计算行内代码区间、加粗斜体专属区间与链接区间。
 function computeRanges(text: string): {
   fullyInCode: (ms: number, me: number) => boolean;
   protectedRanges: [number, number][];
+  inLink: (ms: number, me: number) => boolean;
 } {
   const codeRanges: [number, number][] = [];
   for (const m of codeMatchers) {
@@ -155,19 +157,40 @@ function computeRanges(text: string): {
       protectedRanges.push([ms, me]);
     }
   }
-  return { fullyInCode, protectedRanges };
+
+  // 链接区间：内部链接与外部链接占据的字符范围。
+  // 链接内部的其它候选（行内代码、加粗、高亮、标签等）一律屏蔽，
+  // 仅保留链接自身在末尾的一个按钮，避免编辑模式下链接内部重复出现按钮。
+  const linkRanges: [number, number][] = [];
+  for (const m of linkMatchers) {
+    const { regex } = m;
+    regex.lastIndex = 0;
+    let match: RegExpExecArray | null;
+    while ((match = regex.exec(text)) !== null) {
+      linkRanges.push([match.index, match.index + match[0].length]);
+    }
+  }
+  const inLink = (ms: number, me: number): boolean =>
+    linkRanges.some(([ps, pe]) => ps <= ms && me <= pe);
+
+  return { fullyInCode, protectedRanges, inLink };
 }
 
 // 过滤候选：屏蔽代码内部的非代码候选，吸收与加粗斜体专属区间重叠的 bold/italic，
-// 并丢弃完全相同的重复候选。
+// 屏蔽链接内部的非链接候选，并丢弃完全相同的重复候选。
 function filterCandidates(
   candidates: Candidate[],
   fullyInCode: (ms: number, me: number) => boolean,
   protectedRanges: [number, number][],
+  inLink: (ms: number, me: number) => boolean,
 ): Candidate[] {
   const filtered = candidates.filter((c) => {
     if (fullyInCode(c.ms, c.me)) {
       return c.type === "code";
+    }
+    if (inLink(c.ms, c.me)) {
+      // 链接内部只保留链接自身，屏蔽其内部可能命中的其它类型
+      return c.type === "internalLink" || c.type === "externalLink";
     }
     if (c.type === "bold" || c.type === "italic") {
       const overlaps = protectedRanges.some(
@@ -231,8 +254,8 @@ function computeDecorations(
     const candidates = collectCandidates(text, matchers);
     if (candidates.length === 0) continue;
 
-    const { fullyInCode, protectedRanges } = computeRanges(text);
-    const kept = filterCandidates(candidates, fullyInCode, protectedRanges);
+    const { fullyInCode, protectedRanges, inLink } = computeRanges(text);
+    const kept = filterCandidates(candidates, fullyInCode, protectedRanges, inLink);
     widgets.push(...buildWidgets(line, kept, icon, plugin));
   }
 

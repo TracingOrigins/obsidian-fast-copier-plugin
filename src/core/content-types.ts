@@ -148,6 +148,12 @@ export function getReadingSelectorString(enabled: ContentTypeId[]): string {
   return out.join(",");
 }
 
+// 链接匹配器（内部 + 外部），供编辑模式屏蔽链接内部的其它候选使用。
+export const linkMatchers: SourceMatcher[] = [
+  ...internalLinkMatchers,
+  ...externalLinkMatchers,
+];
+
 // ---- 运行时可见性（由命令切换，不持久化） ----
 let copyButtonsVisible = true;
 
