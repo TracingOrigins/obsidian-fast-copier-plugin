@@ -27,6 +27,8 @@
   "copy_button_icon_desc": "选择复制按钮显示的图标。",
   "show_notification": "显示复制提示",
   "show_notification_desc": "复制到剪贴板后显示通知提示。",
+  "hide_on_print": "打印/PDF 时隐藏按钮",
+  "hide_on_print_desc": "在打印及导出 PDF 时自动隐藏复制按钮。",
   "reset_defaults": "重置为默认值",
   "reset_defaults_desc": "将所有设置恢复为出厂默认值。",
   "reset": "重置",

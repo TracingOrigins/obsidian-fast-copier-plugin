@@ -34,6 +34,9 @@ export default class FastCopierPlugin extends Plugin {
     // 设置面板
     this.addSettingTab(new FastCopierSettingTab(this.app, this));
 
+    // 依据设置决定是否在打印/PDF 时隐藏按钮
+    this.applyPrintHiding();
+
     // 命令：切换显示/隐藏复制按钮
     this.addCommand({
       id: "toggle-copy-button-visibility",
@@ -43,6 +46,7 @@ export default class FastCopierPlugin extends Plugin {
   }
 
   onunload(): void {
+    document.body.classList.remove("fast-copier-hide-print");
     this.copyHandler?.unregister();
     this.copyHandler = null;
   }
@@ -57,7 +61,16 @@ export default class FastCopierPlugin extends Plugin {
 
   async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
+    this.applyPrintHiding();
     this.refreshAllViews();
+  }
+
+  // 根据设置切换 body 类，控制打印/PDF 时是否隐藏按钮
+  private applyPrintHiding(): void {
+    document.body.classList.toggle(
+      "fast-copier-hide-print",
+      this.settings.hideOnPrint,
+    );
   }
 
   private refreshAllViews(): void {

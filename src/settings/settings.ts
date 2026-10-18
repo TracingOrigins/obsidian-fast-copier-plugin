@@ -17,12 +17,14 @@ export interface FastCopierSettings {
   enabledTypes: ContentTypeId[];
   copyButtonIcon: string;
   showNotification: boolean;
+  hideOnPrint: boolean;
 }
 
 export const DEFAULT_SETTINGS: FastCopierSettings = {
   enabledTypes: [...ALL_TYPE_IDS],
   copyButtonIcon: "copy",
   showNotification: true,
+  hideOnPrint: true,
 };
 
 // 每个内容类型的开关使用独立 control key：type:<id>
@@ -90,6 +92,14 @@ export class FastCopierSettingTab extends PluginSettingTab {
             },
           },
           {
+            name: t("hide_on_print"),
+            desc: t("hide_on_print_desc"),
+            control: {
+              type: "toggle",
+              key: "hideOnPrint",
+            },
+          },
+          {
             name: t("reset_defaults"),
             desc: t("reset_defaults_desc"),
             render: (setting: Setting) => {
@@ -106,6 +116,7 @@ export class FastCopierSettingTab extends PluginSettingTab {
                         this.plugin.settings.enabledTypes = [...DEFAULT_SETTINGS.enabledTypes];
                         this.plugin.settings.copyButtonIcon = DEFAULT_SETTINGS.copyButtonIcon;
                         this.plugin.settings.showNotification = DEFAULT_SETTINGS.showNotification;
+                        this.plugin.settings.hideOnPrint = DEFAULT_SETTINGS.hideOnPrint;
                         await this.plugin.saveSettings();
                         this.update();
                       }).open();
@@ -127,6 +138,7 @@ export class FastCopierSettingTab extends PluginSettingTab {
     }
     if (key === "copyButtonIcon") return this.plugin.settings.copyButtonIcon;
     if (key === "showNotification") return this.plugin.settings.showNotification;
+    if (key === "hideOnPrint") return this.plugin.settings.hideOnPrint;
     return undefined;
   }
 
@@ -149,6 +161,10 @@ export class FastCopierSettingTab extends PluginSettingTab {
     }
     if (key === "showNotification") {
       this.plugin.settings.showNotification = value as boolean;
+      return this.plugin.saveSettings();
+    }
+    if (key === "hideOnPrint") {
+      this.plugin.settings.hideOnPrint = value as boolean;
       return this.plugin.saveSettings();
     }
   }

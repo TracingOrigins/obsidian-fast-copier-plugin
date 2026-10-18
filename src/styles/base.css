@@ -54,3 +54,12 @@
   opacity: 1;
   background-color: var(--background-modifier-hover, rgba(128, 128, 128, 0.15));
 }
+
+/* ---- 打印 / PDF 导出时隐藏复制按钮（由 hideOnPrint 设置控制） ---- */
+@media print {
+  body.fast-copier-hide-print .fast-copier-btn,
+  body.fast-copier-hide-print .fast-copier-source-btn,
+  body.fast-copier-hide-print .fast-copier-clickable {
+    display: none;
+  }
+}
