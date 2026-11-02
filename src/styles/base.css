@@ -2,6 +2,11 @@
    Fast Copier — styles
    ============================================================ */
 
+.fast-copier-btn svg,
+.fast-copier-source-btn svg {
+  pointer-events: none;
+}
+
 /* ---- 阅读模式：单击复制的元素 ---- */
 .fast-copier-clickable {
   cursor: copy;
