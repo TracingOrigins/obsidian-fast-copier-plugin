@@ -1,10 +1,9 @@
-import { Notice, setIcon } from "obsidian";
+import { setIcon } from "obsidian";
 import type { MarkdownPostProcessorContext } from "obsidian";
 import {
   getReadingSelectorString,
   areCopyButtonsVisible,
 } from "../core/content-types";
-import { t } from "../utils/i18n";
 import type { FastCopierPluginLike } from "../types/plugin";
 
 // ============================================================
@@ -25,11 +24,15 @@ export class FastCopierHandler {
       this.postProcessor.bind(this),
     );
     const container = this.plugin.app.workspace.containerEl;
+    container.addEventListener("pointerdown", this.onClickBound, true);
+    container.addEventListener("mousedown", this.onClickBound, true);
     container.addEventListener("click", this.onClickBound, true);
   }
 
   unregister(): void {
     const container = this.plugin.app.workspace.containerEl;
+    container.removeEventListener("pointerdown", this.onClickBound, true);
+    container.removeEventListener("mousedown", this.onClickBound, true);
     container.removeEventListener("click", this.onClickBound, true);
   }
 
@@ -55,6 +58,15 @@ export class FastCopierHandler {
     for (const selector of selectors) {
       if (boldItalicCompound.includes(selector)) continue;
       try {
+        if (el.matches(selector)) {
+          if (
+            !el.hasClass("fast-copier-btn") &&
+            !el.closest("pre") &&
+            (el.tagName === "CODE" || !el.closest("code"))
+          ) {
+            allMatches.push(el);
+          }
+        }
         el.findAll(selector).forEach((match) => {
           if (match.hasClass("fast-copier-btn")) return;
           // 代码块（围栏 ``` / ~~~）内的内容不显示复制按钮
@@ -75,7 +87,10 @@ export class FastCopierHandler {
     //    - 关闭时整体不显示，且内层也不被 bold/italic 选项回退匹配；
     //    其内部嵌套的其它类型（如高亮）仍作为独立元素单独显示按钮。
     const pureNodes = new Set<HTMLElement>();
-    for (const m of el.findAll("strong, em")) {
+    const strongEmCandidates = el.matches("strong, em")
+      ? [el, ...el.findAll("strong, em")]
+      : el.findAll("strong, em");
+    for (const m of strongEmCandidates) {
       const inner = this.getBoldItalicInner(m);
       if (inner) {
         pureNodes.add(m);
@@ -170,46 +185,72 @@ export class FastCopierHandler {
   private injectCopyButton(el: HTMLElement, copyText: string): void {
     if (!copyText) return;
 
+    const doc =
+      el.ownerDocument ||
+      (typeof activeDocument !== "undefined" ? activeDocument : document);
+    const body = doc.body ?? document.body;
     const isBlock = /^(H[1-6]|BLOCKQUOTE)$/.test(el.tagName);
 
-    const btn = document.body.createSpan();
+    const btn = body.createSpan();
     btn.className = "fast-copier-btn";
     const icon = this.plugin.settings.copyButtonIcon || "copy";
     setIcon(btn, icon);
     btn.setAttr("title", copyText);
     btn.setAttr("data-fast-copier-text", copyText);
+    btn.addEventListener("click", (ev: MouseEvent) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      void this.copyToClipboard(copyText);
+    });
 
     if (isBlock) {
       // 块级元素：直接把按钮作为最后一个子节点，紧贴文本之后，
       // 不包裹整个元素，避免按钮掉到下一行或跑到块级右边缘。
       el.appendChild(btn);
-    } else {
-      const wrapper = document.body.createSpan();
+    } else if (el.parentNode) {
+      const wrapper = body.createSpan();
       wrapper.className = "fast-copier-wrapper";
-      el.parentNode?.insertBefore(wrapper, el);
+      el.parentNode.insertBefore(wrapper, el);
       wrapper.appendChild(el);
       wrapper.appendChild(btn);
+    } else {
+      el.appendChild(btn);
     }
   }
 
   // ---- 事件处理 ----
 
   private onClick(e: MouseEvent): void {
-    const target = e.target as HTMLElement;
-    if (!target.closest(".markdown-reading-view")) return;
+    if (typeof e.button === "number" && e.button !== 0) return;
 
-    // 复制按钮
-    const btn = target.closest?.(".fast-copier-btn");
+    let rawTarget = e.target as Node | null;
+    if (rawTarget && rawTarget.nodeType === Node.TEXT_NODE) {
+      rawTarget = rawTarget.parentElement;
+    }
+    const target = rawTarget as Element | null;
+    if (!target) return;
+
+    // 复制按钮（阅读模式 + 编辑模式顶层捕获）
+    const btn = target.closest?.(
+      ".fast-copier-btn, .fast-copier-source-btn",
+    );
     if (btn) {
       e.preventDefault();
       e.stopPropagation();
-      const text = btn.getAttr("data-fast-copier-text");
+      e.stopImmediatePropagation();
+      const text =
+        btn.getAttribute("data-fast-copier-text") ??
+        btn.getAttribute("title");
       if (text) void this.copyToClipboard(text);
       return;
     }
 
+    if (e.type !== "click") return;
+
     // 单击复制元素
-    let el: HTMLElement | null = target;
+    let el: HTMLElement | null = target.instanceOf(HTMLElement)
+      ? target
+      : target.parentElement;
     while (el) {
       if (el.getAttr?.("data-fast-copier-type") === "click") {
         e.preventDefault();
@@ -224,11 +265,6 @@ export class FastCopierHandler {
   // ---- 辅助 ----
 
   private async copyToClipboard(text: string): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(text);
-      this.plugin.notifyCopy(text);
-    } catch {
-      new Notice(t("copy_failed"));
-    }
+    await this.plugin.copyText(text);
   }
 }

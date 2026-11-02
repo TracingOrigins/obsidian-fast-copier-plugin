@@ -35,20 +35,35 @@ class CopyButtonWidget extends WidgetType {
   }
 
   toDOM(): HTMLElement {
-    const btn = document.body.createSpan();
+    const doc =
+      typeof activeDocument !== "undefined" ? activeDocument : document;
+    const body = doc.body ?? document.body;
+    const btn = body.createSpan();
     btn.className = "fast-copier-source-btn";
     setIcon(btn, this.icon);
     btn.title = this.text;
-    btn.addEventListener("mousedown", (e) => {
+    btn.setAttr("data-fast-copier-text", this.text);
+
+    const trigger = (e: MouseEvent): void => {
+      if (typeof e.button === "number" && e.button !== 0) return;
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
       this.onCopy(this.text);
-    });
+    };
+
+    btn.addEventListener("pointerdown", trigger, true);
+    btn.addEventListener("mousedown", trigger, true);
+    btn.addEventListener("click", trigger, true);
     return btn;
   }
 
   eq(other: CopyButtonWidget): boolean {
     return this.text === other.text && this.icon === other.icon;
+  }
+
+  ignoreEvent(): boolean {
+    return true;
   }
 }
 
