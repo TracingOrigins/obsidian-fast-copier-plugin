@@ -25,6 +25,8 @@
   "advanced": "Дополнительно",
   "copy_button_icon": "Значок кнопки копирования",
   "copy_button_icon_desc": "Выберите значок для кнопки копирования.",
+  "ignore_special_syntax": "Игнорировать специальный синтаксис",
+  "ignore_special_syntax_desc": "Не показывать кнопки копирования для полей и кнопок Meta Bind, встроенных запросов Dataview и JavaScript, а также встроенных полей.",
   "show_notification": "Показывать уведомление",
   "show_notification_desc": "Показывать уведомление при копировании в буфер обмена.",
   "hide_on_print": "Скрывать кнопку при печати / PDF",
