@@ -20,6 +20,7 @@ import {
 } from "../core/content-types";
 import type { FastCopierSettings } from "../settings/settings";
 import type { FastCopierPluginLike } from "../types/plugin";
+import { getSpecialSyntaxRanges, overlapsSpecialSyntax } from "../core/special-syntax";
 
 // ============================================================
 // CopyButtonWidget
@@ -255,7 +256,9 @@ function computeDecorations(
     if (candidates.length === 0) continue;
 
     const { fullyInCode, protectedRanges, inLink } = computeRanges(text);
-    const kept = filterCandidates(candidates, fullyInCode, protectedRanges, inLink);
+    const specialRanges = settings.ignoreSpecialSyntax ? getSpecialSyntaxRanges(text) : [];
+    const kept = filterCandidates(candidates, fullyInCode, protectedRanges, inLink)
+      .filter((c) => !overlapsSpecialSyntax(c.ms, c.me, specialRanges));
     widgets.push(...buildWidgets(line, kept, icon, plugin));
   }
 

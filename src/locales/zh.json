@@ -25,6 +25,8 @@
   "advanced": "高级",
   "copy_button_icon": "复制按钮图标",
   "copy_button_icon_desc": "选择复制按钮显示的图标。",
+  "ignore_special_syntax": "忽略特殊语法",
+  "ignore_special_syntax_desc": "不在 Meta Bind 字段和按钮、Dataview 行内查询、JavaScript 查询及行内字段上显示复制按钮。",
   "show_notification": "显示复制提示",
   "show_notification_desc": "复制到剪贴板后显示通知提示。",
   "hide_on_print": "打印/PDF 时隐藏按钮",
