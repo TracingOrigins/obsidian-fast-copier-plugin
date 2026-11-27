@@ -27,6 +27,8 @@
   "copy_button_icon_desc": "Choose the icon for the copy button.",
   "show_notification": "Show copy notification",
   "show_notification_desc": "Show a notice when content is copied to clipboard.",
+  "ignore_special_syntax": "Ignore special syntax",
+  "ignore_special_syntax_desc": "Skip copy buttons on Meta Bind fields and buttons, Dataview inline queries, JavaScript queries, and inline fields.",
   "hide_on_print": "Hide button when printing / PDF",
   "hide_on_print_desc": "Automatically hide copy buttons in print and PDF export output.",
   "reset_defaults": "Reset to defaults",

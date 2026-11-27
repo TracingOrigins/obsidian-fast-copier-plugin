@@ -5,6 +5,7 @@ import {
   areCopyButtonsVisible,
 } from "../core/content-types";
 import type { FastCopierPluginLike } from "../types/plugin";
+import { isSpecialRenderedElement } from "../core/special-syntax";
 
 // ============================================================
 // FastCopierHandler — 阅读模式
@@ -69,6 +70,7 @@ export class FastCopierHandler {
         }
         el.findAll(selector).forEach((match) => {
           if (match.hasClass("fast-copier-btn")) return;
+          if (s.ignoreSpecialSyntax && isSpecialRenderedElement(match)) return;
           // 代码块（围栏 ``` / ~~~）内的内容不显示复制按钮
           if (match.closest("pre")) return;
           // 行内代码内部的内容不另作匹配（仅保留代码自身按钮）

@@ -18,6 +18,7 @@ export interface FastCopierSettings {
   copyButtonIcon: string;
   showNotification: boolean;
   hideOnPrint: boolean;
+  ignoreSpecialSyntax: boolean;
 }
 
 export const DEFAULT_SETTINGS: FastCopierSettings = {
@@ -25,6 +26,7 @@ export const DEFAULT_SETTINGS: FastCopierSettings = {
   copyButtonIcon: "copy",
   showNotification: true,
   hideOnPrint: true,
+  ignoreSpecialSyntax: true,
 };
 
 // 每个内容类型的开关使用独立 control key：type:<id>
@@ -92,6 +94,14 @@ export class FastCopierSettingTab extends PluginSettingTab {
             },
           },
           {
+            name: t("ignore_special_syntax"),
+            desc: t("ignore_special_syntax_desc"),
+            control: {
+              type: "toggle",
+              key: "ignoreSpecialSyntax",
+            },
+          },
+          {
             name: t("hide_on_print"),
             desc: t("hide_on_print_desc"),
             control: {
@@ -117,6 +127,7 @@ export class FastCopierSettingTab extends PluginSettingTab {
                         this.plugin.settings.copyButtonIcon = DEFAULT_SETTINGS.copyButtonIcon;
                         this.plugin.settings.showNotification = DEFAULT_SETTINGS.showNotification;
                         this.plugin.settings.hideOnPrint = DEFAULT_SETTINGS.hideOnPrint;
+                        this.plugin.settings.ignoreSpecialSyntax = DEFAULT_SETTINGS.ignoreSpecialSyntax;
                         await this.plugin.saveSettings();
                         this.update();
                       }).open();
@@ -139,6 +150,7 @@ export class FastCopierSettingTab extends PluginSettingTab {
     if (key === "copyButtonIcon") return this.plugin.settings.copyButtonIcon;
     if (key === "showNotification") return this.plugin.settings.showNotification;
     if (key === "hideOnPrint") return this.plugin.settings.hideOnPrint;
+    if (key === "ignoreSpecialSyntax") return this.plugin.settings.ignoreSpecialSyntax;
     return undefined;
   }
 
@@ -165,6 +177,10 @@ export class FastCopierSettingTab extends PluginSettingTab {
     }
     if (key === "hideOnPrint") {
       this.plugin.settings.hideOnPrint = value as boolean;
+      return this.plugin.saveSettings();
+    }
+    if (key === "ignoreSpecialSyntax") {
+      this.plugin.settings.ignoreSpecialSyntax = value as boolean;
       return this.plugin.saveSettings();
     }
   }

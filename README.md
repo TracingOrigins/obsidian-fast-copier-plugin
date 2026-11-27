@@ -13,6 +13,7 @@
 - **Copy button on formatted text** — inline code, bold, italic, underline, strikethrough, highlight, headings, tags, internal links, and external links
 - **Both modes** — works in Editing (Source) mode and Reading (Live Preview / Preview) mode with a single shared toggle list
 - **Unified content-type settings** — one checkbox list to enable/disable each content type; no need to edit patterns or CSS selectors
+- **Special syntax filtering** — skip copy buttons on Meta Bind inline fields and buttons, Dataview inline queries, JavaScript queries, and inline metadata fields by default
 - **Command-controlled visibility** — toggle copy buttons on/off with the **Toggle show/hide copy button** command
 - **Custom icon** — choose the copy button icon
 - **Copy notification** — optional notice after copying
@@ -35,6 +36,7 @@ Customize which content types show a button via **Settings → Fast Copier**.
 | **Content types** | All enabled | Checkbox list of content types (inline code, bold, italic, underline, strikethrough, highlight, heading, tag, internal link, external link). Enabled types show a copy button. |
 | **Copy button icon** | copy | Icon used for the copy button. |
 | **Show copy notification** | On | Show a notice after copying to clipboard. |
+| **Ignore special syntax** | On | Skip Meta Bind inline fields and buttons, Dataview inline queries and JavaScript queries, and Dataview inline metadata fields. Turn off to show copy buttons on these expressions. |
 
 > **Tip:** Showing or hiding the copy buttons is controlled by the **Toggle show/hide copy button** command, not by a setting.
 
