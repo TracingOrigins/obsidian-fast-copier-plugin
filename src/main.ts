@@ -101,11 +101,50 @@ export default class FastCopierPlugin extends Plugin {
     }
   }
 
+  private lastCopyAt = 0;
+  private lastCopyText = "";
+
   // 写入剪贴板并（可选）弹出通知，源码模式与阅读模式共用
   async copyText(text: string): Promise<void> {
+    const now = Date.now();
+    if (text === this.lastCopyText && now - this.lastCopyAt < 250) {
+      return;
+    }
+    this.lastCopyAt = now;
+    this.lastCopyText = text;
+
+    let copied = false;
     try {
-      await navigator.clipboard.writeText(text);
+      const win =
+        typeof activeWindow !== "undefined" ? activeWindow : window;
+      const winReq = (
+        win as unknown as {
+          require?: (id: string) => {
+            clipboard?: { writeText?: (val: string) => void };
+          };
+        }
+      ).require;
+      if (typeof winReq === "function") {
+        const electron = winReq("electron");
+        if (typeof electron?.clipboard?.writeText === "function") {
+          electron.clipboard.writeText(text);
+          copied = true;
+        }
+      }
     } catch {
+      // Fall back to navigator.clipboard on mobile or restricted contexts
+    }
+
+    if (!copied) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      } catch {
+        // Fall through to failure notice
+      }
+    }
+
+    if (!copied) {
       new Notice(t("copy_failed"));
       return;
     }
